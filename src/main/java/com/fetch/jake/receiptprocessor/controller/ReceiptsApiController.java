@@ -3,8 +3,10 @@ package com.fetch.jake.receiptprocessor.controller;
 import com.fetch.jake.receiptprocessor.domain.GetReceiptPointsResponse;
 import com.fetch.jake.receiptprocessor.domain.ProcessReceiptRequest;
 import com.fetch.jake.receiptprocessor.domain.ProcessReceiptResponse;
+import com.fetch.jake.receiptprocessor.service.ReceiptService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +16,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/receipts")
 public class ReceiptsApiController {
 
+    @Autowired
+    ReceiptService receiptService;
+
     @PostMapping("/process")
     public ResponseEntity<ProcessReceiptResponse> process(@RequestBody @Valid ProcessReceiptRequest processRequest) {
         log.info("Process request received: " + processRequest);
-        return new ResponseEntity<>(new ProcessReceiptResponse("id-12345"), HttpStatus.OK);
+        String id = receiptService.processReceipt(processRequest);
+        return new ResponseEntity<>(new ProcessReceiptResponse(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}/points")
