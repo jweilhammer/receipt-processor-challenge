@@ -3,14 +3,12 @@ package com.fetch.jake.receiptprocessor.service;
 import com.fetch.jake.receiptprocessor.domain.ProcessReceiptRequest;
 import com.fetch.jake.receiptprocessor.model.Receipt;
 import com.fetch.jake.receiptprocessor.model.ReceiptItem;
-import jakarta.validation.Valid;
+import com.fetch.jake.receiptprocessor.repository.ReceiptRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.math.BigDecimal;
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +20,7 @@ import java.util.function.Consumer;
 public class ReceiptService {
 
     @Autowired
-    PointRules receiptPointCommandMap;
+    ReceiptRepository repository;
 
     public static final Map<String, Consumer<Receipt>> receiptPointsRuleMap = PointRules.receiptPointsRules;
 
@@ -30,27 +28,32 @@ public class ReceiptService {
         // Model receipt and items from request DTO
         Receipt requestReceipt = convertReceiptRequestToEntity(processRequest);
         applyPoints(requestReceipt);
+        repository.saveReceipt(requestReceipt);
         return requestReceipt.getId();
     }
 
-
     public void applyPoints(Receipt receipt) {
         receiptPointsRuleMap.values().forEach(
-            rule -> rule.accept(receipt)
+                rule -> rule.accept(receipt)
         );
         log.info("Points have been applied to receipt: " + receipt);
+    }
+
+
+    public Receipt getReceipt(String id) {
+        return repository.getReceipt(id);
     }
 
     /**
      * Provides an abstraction between what users send as requests, and what we map
      * as data entities. This allows re-modeling the request in ways that make sense
      * for us, and future API versions
-     *
+     * <p>
      * For example: request includes date + time separately, but we can convert into
      * a full datetime object here
      *
      * @param processRequest data object with validated values mapped from user request
-     * @return               The receipt that models the information from the request
+     * @return The receipt that models the information from the request
      */
     public Receipt convertReceiptRequestToEntity(ProcessReceiptRequest processRequest) {
         List<ReceiptItem> requestItems = new ArrayList<>();

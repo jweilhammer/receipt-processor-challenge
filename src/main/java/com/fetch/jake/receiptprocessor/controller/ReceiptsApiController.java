@@ -3,6 +3,7 @@ package com.fetch.jake.receiptprocessor.controller;
 import com.fetch.jake.receiptprocessor.domain.GetReceiptPointsResponse;
 import com.fetch.jake.receiptprocessor.domain.ProcessReceiptRequest;
 import com.fetch.jake.receiptprocessor.domain.ProcessReceiptResponse;
+import com.fetch.jake.receiptprocessor.model.Receipt;
 import com.fetch.jake.receiptprocessor.service.ReceiptService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ public class ReceiptsApiController {
     @GetMapping("/{id}/points")
     public ResponseEntity<GetReceiptPointsResponse> getReceiptPoints(@PathVariable @Valid String id) {
         log.info("Get Receipt Point request received for id: " + id);
-        return new ResponseEntity<>(new GetReceiptPointsResponse(12345), HttpStatus.OK);
+        Receipt receipt = receiptService.getReceipt(id);
+        return new ResponseEntity<>(new GetReceiptPointsResponse(receipt.getPoints()), HttpStatus.OK);
     }
 }
