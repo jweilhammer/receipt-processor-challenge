@@ -4,6 +4,8 @@ import com.fetch.jake.receiptprocessor.domain.ProcessReceiptRequest;
 import com.fetch.jake.receiptprocessor.model.Receipt;
 import com.fetch.jake.receiptprocessor.model.ReceiptItem;
 import com.fetch.jake.receiptprocessor.repository.ReceiptRepository;
+import com.fetch.jake.receiptprocessor.service.pointrules.ReceiptPointRuleCommandFactory;
+import com.fetch.jake.receiptprocessor.service.pointrules.ReceiptPointRuleOptions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,9 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 @Slf4j
 @Service
@@ -22,26 +22,31 @@ public class ReceiptService {
     @Autowired
     ReceiptRepository repository;
 
-    public static final Map<String, Consumer<Receipt>> receiptPointsRuleMap = PointRules.receiptPointsRules;
+    @Autowired
+    ReceiptPointRuleCommandFactory pointRuleFactory;
+
+    @Autowired
+    ReceiptPointRuleOptions defaultReceiptPointRuleOptions;
+
 
     public String processReceipt(ProcessReceiptRequest processRequest) {
         // Model receipt and items from request DTO
         Receipt requestReceipt = convertReceiptRequestToEntity(processRequest);
-        applyPoints(requestReceipt);
+        applyPoints(requestReceipt, defaultReceiptPointRuleOptions);
         repository.saveReceipt(requestReceipt);
         return requestReceipt.getId();
     }
 
-    public void applyPoints(Receipt receipt) {
-        receiptPointsRuleMap.values().forEach(
-                rule -> rule.accept(receipt)
-        );
-        log.info("Points have been applied to receipt: " + receipt);
-    }
-
-
     public Receipt getReceipt(String id) {
         return repository.getReceipt(id);
+    }
+
+    public void applyPoints(Receipt receipt, ReceiptPointRuleOptions options) {
+        pointRuleFactory.getAllCommands(receipt, options).forEach(
+                rule -> rule.applyRule()
+        );
+        
+        log.info("Points have been applied to receipt: " + receipt);
     }
 
     /**

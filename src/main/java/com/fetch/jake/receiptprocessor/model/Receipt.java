@@ -21,7 +21,7 @@ public class Receipt {
     BigDecimal total;
     LocalDateTime purchaseDateTime;
     List<ReceiptItem> items;
-    
+
     @DynamoDbPartitionKey
     public String getId() {
         return id;
@@ -31,5 +31,9 @@ public class Receipt {
     public String toString() {
         return "Receipt [id=" + id + ", points=" + points + ", retailer=" + retailer + ", purchaseDateTime="
                 + purchaseDateTime + ", total=" + total + ", items=" + items + "]";
+    }
+
+    public void addPoints(int points) {
+        this.points += points;
     }
 }
