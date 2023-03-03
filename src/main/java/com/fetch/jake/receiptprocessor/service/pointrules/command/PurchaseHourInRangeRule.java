@@ -14,9 +14,9 @@ public class PurchaseHourInRangeRule extends ReceiptPointRuleCommand {
 
     public PurchaseHourInRangeRule(Receipt receipt, ReceiptPointRuleOptions options) {
         super(receipt);
-        pointsToAdd = options.getPurchaseTimeThresholdPoints();
-        rangeStart = options.getPurchaseThresholdStart();
-        rangeEnd = options.getPurchaseThresholdEnd();
+        pointsToAdd = options.getPurchaseTimeInRangePoints();
+        rangeStart = options.getPurchaseTimeRangeStart();
+        rangeEnd = options.getPurchaseTimeRangeEnd();
     }
 
     @Override

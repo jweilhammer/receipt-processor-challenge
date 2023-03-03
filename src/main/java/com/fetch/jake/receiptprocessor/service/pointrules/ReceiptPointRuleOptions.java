@@ -22,10 +22,10 @@ public class ReceiptPointRuleOptions {
 
     BigDecimal itemDescriptionPointMultiplier = BigDecimal.valueOf(0.20);
 
-    LocalTime purchaseThresholdStart = LocalTime.of(14, 00);
+    LocalTime purchaseTimeRangeStart = LocalTime.of(14, 00);
 
-    // Should be greater than threshold start in current day, no inverse thresholds across multiple days
-    LocalTime purchaseThresholdEnd = LocalTime.of(16, 00);
+    // Should be greater than range start in current day, no inverse ranges across multiple days
+    LocalTime purchaseTimeRangeEnd = LocalTime.of(16, 00);
     int itemDescriptionLengthMultiple = 3;
     int itemGroupSize = 2;
 
@@ -33,6 +33,6 @@ public class ReceiptPointRuleOptions {
     int quarterMultiplePoints = 25;
     int oddPurchaseDayPoints = 6;
     int itemGroupPointCount = 5;
-    int purchaseTimeThresholdPoints = 10;
+    int purchaseTimeInRangePoints = 10;
     int evenTotalPoints = 50;
 }
