@@ -24,13 +24,17 @@ public class ReceiptsApiController {
     public ResponseEntity<ProcessReceiptResponse> process(@RequestBody @Valid ProcessReceiptRequest processRequest) {
         log.info("Process request received: " + processRequest);
         String id = receiptService.processReceipt(processRequest);
-        return new ResponseEntity<>(new ProcessReceiptResponse(id), HttpStatus.OK);
+        return new ResponseEntity<>(new ProcessReceiptResponse(id), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}/points")
     public ResponseEntity<GetReceiptPointsResponse> getReceiptPoints(@PathVariable @Valid String id) {
         log.info("Get Receipt Point request received for id: " + id);
         Receipt receipt = receiptService.getReceipt(id);
+        if (receipt == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
         return new ResponseEntity<>(new GetReceiptPointsResponse(receipt.getPoints()), HttpStatus.OK);
     }
 }
