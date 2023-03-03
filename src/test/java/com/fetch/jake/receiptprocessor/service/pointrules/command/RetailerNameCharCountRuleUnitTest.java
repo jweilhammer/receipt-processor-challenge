@@ -37,7 +37,7 @@ public class RetailerNameCharCountRuleUnitTest {
 
     @ParameterizedTest
     @MethodSource(value = "roundTotalInputs")
-    void countsAlphaNumericalOnly(String retailerName, int expectedCharCount) {
+    void awardsPointsForAlphaNumericsOnly(String retailerName, int expectedCharCount) {
         // setup
         receipt.setRetailer(retailerName);
         receipt.setPoints(0);
