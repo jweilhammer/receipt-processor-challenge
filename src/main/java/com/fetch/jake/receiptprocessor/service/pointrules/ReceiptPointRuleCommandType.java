@@ -1,6 +1,6 @@
 package com.fetch.jake.receiptprocessor.service.pointrules;
 
-public enum ReceiptPointRuleCommandTypes {
+public enum ReceiptPointRuleCommandType {
     RETAILER_NAME_CHAR_COUNT,
     ITEM_DESC_LENGTH_MULTIPLE,
     ITEM_GROUP_COUNT,

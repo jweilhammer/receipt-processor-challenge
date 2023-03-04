@@ -11,10 +11,10 @@ import java.util.List;
 @Component
 public class ReceiptPointRuleCommandFactory {
 
-    static ReceiptPointRuleCommandTypes[] commandTypes = ReceiptPointRuleCommandTypes.values();
-    static int totalCommandCount = ReceiptPointRuleCommandTypes.values().length;
+    static ReceiptPointRuleCommandType[] commandTypes = ReceiptPointRuleCommandType.values();
+    static int totalCommandCount = ReceiptPointRuleCommandType.values().length;
 
-    public ReceiptPointRuleCommand getCommand(ReceiptPointRuleCommandTypes ruleType, Receipt receipt, ReceiptPointRuleOptions options) {
+    public ReceiptPointRuleCommand getCommand(ReceiptPointRuleCommandType ruleType, Receipt receipt, ReceiptPointRuleOptions options) {
         switch (ruleType) {
             case ITEM_DESC_LENGTH_MULTIPLE:
                 return new ItemDescLenMultipleRule(receipt, options);
@@ -37,7 +37,7 @@ public class ReceiptPointRuleCommandFactory {
 
     public List<ReceiptPointRuleCommand> getAllCommands(Receipt receipt, ReceiptPointRuleOptions options) {
         List<ReceiptPointRuleCommand> ruleCommands = new ArrayList<>(totalCommandCount);
-        for (ReceiptPointRuleCommandTypes commandType : commandTypes) {
+        for (ReceiptPointRuleCommandType commandType : commandTypes) {
             ruleCommands.add(getCommand(commandType, receipt, options));
         }
 
