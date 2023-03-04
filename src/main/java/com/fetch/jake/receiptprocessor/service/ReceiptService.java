@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -45,7 +46,7 @@ public class ReceiptService {
         pointRuleFactory.getAllCommands(receipt, options).forEach(
                 rule -> rule.applyRule()
         );
-        
+
         log.info("Points have been applied to receipt: " + receipt);
     }
 
@@ -71,7 +72,9 @@ public class ReceiptService {
                 .id(UUID.randomUUID().toString())
                 .points(0)
                 .retailer(processRequest.getRetailer())
-                .purchaseDateTime(LocalDateTime.of(processRequest.getPurchaseDate(), processRequest.getPurchaseTime()))
+                .purchaseDateTime(LocalDateTime.of(
+                        processRequest.getPurchaseDate(), processRequest.getPurchaseTime().truncatedTo(ChronoUnit.MINUTES))
+                )
                 .items(requestItems)
                 .total(processRequest.getTotal())
                 .build();
