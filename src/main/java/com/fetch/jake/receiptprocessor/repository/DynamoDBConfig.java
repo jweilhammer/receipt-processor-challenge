@@ -55,7 +55,7 @@ public class DynamoDBConfig {
         } catch (ResourceNotFoundException rnf) {
             // Create table locally for development environment / integration tests
             log.error(rnf.getMessage());
-            if (amazonDynamoDBEndpoint.contains("localhost")) {
+            if (amazonDynamoDBEndpoint.contains("localhost") || System.getProperty("integration.tests") != null) {
                 log.info("Creating table " + dynamoTableName + " locally with definition defined in: " + Receipt.class);
                 ReceiptTable.createTable();
             } else {
