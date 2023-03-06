@@ -1,11 +1,15 @@
 package com.fetch.jake.receiptprocessor.controller;
 
 import com.fetch.jake.receiptprocessor.domain.GetReceiptPointsResponse;
+import com.fetch.jake.receiptprocessor.domain.ProcessReceiptRequest;
 import com.fetch.jake.receiptprocessor.domain.ProcessReceiptResponse;
+import com.fetch.jake.receiptprocessor.service.ReceiptService;
 import org.json.JSONException;
 import org.junit.jupiter.api.*;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.GenericContainer;
@@ -16,14 +20,19 @@ import org.testcontainers.utility.DockerImageName;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @Testcontainers
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ReceiptsApiControllerIntegrationTest {
+    @SpyBean
+    @Autowired
+    ReceiptService receiptService;
 
     @Autowired
-    private WebTestClient webTestClient; // available with Spring WebFlux
+    private WebTestClient webTestClient;
 
     static String receiptId;
 
@@ -74,9 +83,8 @@ public class ReceiptsApiControllerIntegrationTest {
         UUID uuid = UUID.fromString(response.getId());
         assertFalse(response.getId().isEmpty());
         assertEquals(response.getId(), uuid.toString());
-
+        verify(receiptService, times(1)).processReceipt(ArgumentMatchers.any(ProcessReceiptRequest.class));
         receiptId = response.getId();
-        System.out.println("RECEIVED ID:" + receiptId);
     }
 
     @Test
@@ -91,6 +99,7 @@ public class ReceiptsApiControllerIntegrationTest {
                 .returnResult().getResponseBody();
 
         assertEquals(109, response.getPoints());
+        verify(receiptService, times(1)).getReceipt(receiptId);
     }
 
     @Test
@@ -101,5 +110,7 @@ public class ReceiptsApiControllerIntegrationTest {
                 .uri("/receipts/this_id_is_not_found/points")
                 .exchange()
                 .expectStatus().isNotFound();
+
+        verify(receiptService, times(1)).getReceipt("this_id_is_not_found");
     }
 }
