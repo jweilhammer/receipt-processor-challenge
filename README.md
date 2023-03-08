@@ -12,9 +12,21 @@ Receipt processor running on: http://localhost:8080 and DynamoDB-local on: http:
 docker-compose up --build
 ```
 
-# Run DynamoDB locally as database:
+# Run unit + integration tests with Docker!:
+
+This method does not require maven or a Java installation on your system.
+
+The following should be run from the root of the project directory and will execute on a docker container running maven:
 
 ```
-docker run -p 8000:8000 amazon/dynamodb-local:1.21.0
+docker run -it --rm -v $PWD:$PWD -w $PWD -v /var/run/docker.sock:/var/run/docker.sock maven:3.9.0-eclipse-temurin-17 mvn test
 ```
+
+See testcontainers documentation here for more information:
+https://www.testcontainers.org/supported_docker_environment/continuous_integration/dind_patterns/
+> -v $PWD:$PWD will add your current directory as a volume inside the container \
+> -w $PWD will set the current directory to this volume \
+> -v /var/run/docker.sock:/var/run/docker.sock will map the Docker socket \
+> -it Creates interactive bash shell \
+> --rm Automatically remove the container when it exits
 

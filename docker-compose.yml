@@ -15,7 +15,7 @@ services:
       - AWS_SECRET_ACCESS_KEY=secret
       - AWS_REGION=us-east-1
   dynamodb:
-    image: amazon/dynamodb-local
+    image: amazon/dynamodb-local:1.21.0
     container_name: dynamodb-local-compose
     restart: always
     ports:
