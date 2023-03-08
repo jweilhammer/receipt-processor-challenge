@@ -67,7 +67,6 @@ public class ReceiptsApiControllerUnitTest {
                         .content(json))
                 .andExpect(status().isCreated())
                 .andExpect(content().string(containsString("id")))
-                .andDo(print())
                 .andExpect(content().json("{ id: " + mockReceiptId + "}"));
 
         verify(receiptService, times(1)).processReceipt(any(ProcessReceiptRequest.class));
@@ -104,7 +103,6 @@ public class ReceiptsApiControllerUnitTest {
     @Test
     public void processReturns4xxOnMissingRequestBody() throws Exception {
         mockMvc.perform(post("/receipts/process"))
-                .andDo(print())
                 .andExpect(status().isBadRequest());
     }
 
@@ -131,7 +129,6 @@ public class ReceiptsApiControllerUnitTest {
         System.out.println(processReceiptRequestJson);
         mockMvc.perform(post("/receipts/process").contentType(MediaType.APPLICATION_JSON)
                         .content(processReceiptRequestJson.toString()))
-                .andDo(print())
                 .andExpect(status().isBadRequest());
     }
 
@@ -191,7 +188,6 @@ public class ReceiptsApiControllerUnitTest {
         System.out.println(processReceiptRequestJson);
         mockMvc.perform(post("/receipts/process").contentType(MediaType.APPLICATION_JSON)
                         .content(processReceiptRequestJson.toString()))
-                .andDo(print())
                 .andExpect(status().isBadRequest());
     }
 
@@ -213,7 +209,6 @@ public class ReceiptsApiControllerUnitTest {
         System.out.println(processReceiptRequestJson);
         mockMvc.perform(post("/receipts/process").contentType(MediaType.APPLICATION_JSON)
                         .content(processReceiptRequestJson.toString()))
-                .andDo(print())
                 .andExpect(status().isBadRequest());
     }
 

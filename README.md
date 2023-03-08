@@ -70,11 +70,18 @@ java -jar target/receipt-processor-0.0.1.jar
 
 # Running Tests
 
+Tests are written in Java using JUnit 5 as a testing framework. Integration tests are accomplish
+with [testcontainers](https://www.testcontainers.org/) to dynamically spin up DynamoDB-Local docker containers during
+tests.
+
+Maven is used to run the tests with the Surefire plugin during `mvn test` or `mvn package`
+
 ## Run Unit + Integration Tests with Docker!:
 
-This method does not require maven or a Java installation on your system.
+This method does not require maven or a Java installation on your system :-)
 
-The following should be run from the root of the project directory and will execute on a docker container running maven:
+This should be run from the root of the project dir, will download a docker container with maven pre-installed, and use
+your local docker install to allow use of test containers / integration tests
 
 ```
 docker run -it --rm -v $PWD:$PWD -w $PWD -v /var/run/docker.sock:/var/run/docker.sock maven:3.9.0-eclipse-temurin-17 mvn test
