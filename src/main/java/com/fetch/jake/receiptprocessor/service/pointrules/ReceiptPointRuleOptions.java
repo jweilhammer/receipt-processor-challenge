@@ -20,19 +20,16 @@ public class ReceiptPointRuleOptions {
     // Regex pattern to match any non-alphanumerical chars
     public static final String NON_ALPHA_NUMERIC_WHITESPACE_REGEX = "[^a-zA-Z\\d]+";
 
-    BigDecimal itemDescriptionPointMultiplier = BigDecimal.valueOf(0.20);
-
-    LocalTime purchaseTimeRangeStart = LocalTime.of(14, 00);
-
     // Should be greater than range start in current day, no inverse ranges across multiple days
-    LocalTime purchaseTimeRangeEnd = LocalTime.of(16, 00);
-    int itemDescriptionLengthMultiple = 3;
-    int itemGroupSize = 2;
-
-    int retailerNameCharCountMultiplier = 1;
-    int quarterMultiplePoints = 25;
-    int oddPurchaseDayPoints = 6;
-    int itemGroupPointCount = 5;
-    int purchaseTimeInRangePoints = 10;
-    int evenTotalPoints = 50;
+    private LocalTime purchaseTimeRangeEnd = LocalTime.of(16, 00);
+    private LocalTime purchaseTimeRangeStart = LocalTime.of(14, 00);
+    private BigDecimal itemDescriptionPointMultiplier = BigDecimal.valueOf(0.20);
+    private int itemDescriptionLengthMultiple = 3;
+    private int itemGroupSize = 2;
+    private int itemGroupPointCount = 5;
+    private int evenTotalPoints = 50;
+    private int oddPurchaseDayPoints = 6;
+    private int quarterMultiplePoints = 25;
+    private int purchaseTimeInRangePoints = 10;
+    private int retailerNameCharCountMultiplier = 1;
 }

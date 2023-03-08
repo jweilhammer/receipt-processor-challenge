@@ -15,6 +15,9 @@ our dynamo documentss or even using a Redis cache would work for our purposes to
 The app itself utilizes the DTO and Command pattern to cleanly award points to each receipt following all the point
 rules. And an options object was also included that can be easily extended to customize each rule, or even disable them.
 
+All classes are unit tested with JUnit 5 + Spring Boot testing utilities, and Integration tests are enabled through the
+use of testcontainers, see [Running Tests](#running-tests)
+
 ## Development Requirements
 
 * Java 17
@@ -65,7 +68,7 @@ docker run -p 8000:8000 amazon/dynamodb-local
 java -jar target/receipt-processor-0.0.1.jar
 ```
 
-# Tests
+# Running Tests
 
 ## Run Unit + Integration Tests with Docker!:
 
